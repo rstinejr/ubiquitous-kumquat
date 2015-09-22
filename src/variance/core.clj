@@ -20,12 +20,14 @@
 
 (defn calculate-variance2
   [sample]
-  (let [[ss s cnt] (reduce 
-                     (fn [trip1 trip2] 
-                       [ (+ (trip1 0) (trip2 0)) (+ (trip1 1) (trip2 1)) (inc (trip1 2))])
-                     [0 0 0] 
-                     (map (fn [n] [(* n n) n nil]) sample))] 
-    (var-from-sums ss s cnt)))
+  (let [tallies (reduce 
+                  (fn [m1 m2] 
+                    {:sumsq (+   (:sumsq m1) (:sumsq m2)) 
+                     :sum   (+   (:sum   m1) (:sum   m2)) 
+                     :cnt   (inc (:cnt   m1))})
+                  {:sumsq 0 :sum 0 :cnt 0} 
+                  (map (fn [n] {:sumsq (* n n) :sum n}) sample))] 
+    (var-from-sums (:sumsq tallies) (:sum tallies) (:cnt tallies))))
 
 (defn -main
   [& args]

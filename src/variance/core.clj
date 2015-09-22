@@ -9,14 +9,14 @@
 
 (defn calculate-variance
   [sample]
-  (let [[ss s cnt] (loop [[n & the-rest] sample
-                         sumsq          0
-                         sum            0
-                         cnt            0]
+  (let [tallies (loop [[n & the-rest] sample
+                       m              {:sumsq 0 :sum 0 :cnt 0}]
                      (if n
-                       (recur the-rest (+ sumsq (* n n)) (+ sum n) (inc cnt))
-                       [sumsq sum cnt]))]
-    (var-from-sums ss s cnt)))
+                       (recur the-rest {:sumsq (+   (:sumsq m) (* n n)) 
+                                        :sum   (+   (:sum   m) n) 
+                                        :cnt   (inc (:cnt   m))})
+                       m))]
+    (var-from-sums (:sumsq tallies) (:sum tallies) (:cnt tallies))))
 
 (defn calculate-variance2
   [sample]

@@ -3,6 +3,8 @@
 
 (defn- var-from-sums
   [ss s cnt]
+  (when (<= cnt 0)
+    (throw (ex-info "Most have one or more samples to compute variance." {:causes #{:div-by-zero :bad-args}})))
   (double (/ (- ss (/ (* s s) cnt)) cnt)))
 
 (defn calculate-variance
@@ -14,8 +16,6 @@
                      (if n
                        (recur the-rest (+ sumsq (* n n)) (+ sum n) (inc cnt))
                        [sumsq sum cnt]))]
-    (when (= 0 cnt)
-      (throw (ex-info "Most have one or more samples to compute variance." {:causes #{:div-by-zero :bad-args}})))
     (var-from-sums ss s cnt)))
 
 (defn calculate-variance2
@@ -25,7 +25,6 @@
                        [ (+ (trip1 0) (trip2 0)) (+ (trip1 1) (trip2 1)) (inc (trip1 2))])
                      [0 0 0] 
                      (map (fn [n] [(* n n) n nil]) sample))] 
-    ;(println (str "ss: " ss ", s: " s ", cnt: " cnt))
     (var-from-sums ss s cnt)))
 
 (defn -main

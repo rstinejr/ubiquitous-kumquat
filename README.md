@@ -1,2 +1,4 @@
 # ubiquitous-kumquat
-Compute variance
+## Compute variance in Clojure
+
+Work on dimple stat formula.

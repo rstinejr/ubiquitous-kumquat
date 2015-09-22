@@ -3,7 +3,7 @@
 
 (defn- var-from-sums
   [ss s cnt]
-  (double (- (/ ss cnt) (/ (/ (* s s) cnt) cnt))))
+  (double (/ (- ss (/ (* s s) cnt)) cnt)))
 
 (defn calculate-variance
   [sample]

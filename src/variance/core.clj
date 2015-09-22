@@ -1,6 +1,10 @@
 (ns variance.core
   (:gen-class))
 
+(defn- var-from-sums
+  [ss s cnt]
+  (double (- (/ ss cnt) (/ (/ (* s s) cnt) cnt))))
+
 (defn calculate-variance
   [sample]
   (let [[ss s cnt] (loop [[n & the-rest] sample
@@ -12,20 +16,21 @@
                        [sumsq sum cnt]))]
     (when (= 0 cnt)
       (throw (ex-info "Most have one or more samples to compute variance." {:causes #{:div-by-zero :bad-args}})))
-    (double (- (/ ss cnt) (/ (/ (* s s) cnt) cnt)))))
+    (var-from-sums ss s cnt)))
 
 (defn calculate-variance2
   [sample]
-  (let [[ss s] (reduce 
-                     (fn [pair1 pair2] 
-                       [ (+ (pair1 0) (pair2 0)) (+ (pair1 1) (pair2 1))])
-                     [0 0] 
-                     [[4 2 ] [9 3] [1 1] [0 0]])]
-        (println (str "sum sqrs: " ss ", sum: " s ", count: " (count sample)))))
+  (let [[ss s cnt] (reduce 
+                     (fn [trip1 trip2] 
+                       [ (+ (trip1 0) (trip2 0)) (+ (trip1 1) (trip2 1)) (inc (trip1 2))])
+                     [0 0 0] 
+                     (map (fn [x] [(* x x) x 0]) sample))] 
+    ;(println (str "ss: " ss ", s: " s ", cnt: " cnt))
+    (var-from-sums ss s cnt)))
 
 (defn -main
   [& args]
   (let [sample (concat (map #(Integer. %) args))]
     (println "sample:" sample)
-    (calculate-variance2 sample)
-    (println (str "variance: " (calculate-variance sample)))))
+    (println (str "variance from loop:       " (calculate-variance sample)))
+    (println (str "variance from map/reduce: " (calculate-variance2 sample)))))

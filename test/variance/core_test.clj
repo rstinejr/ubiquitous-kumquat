@@ -2,7 +2,7 @@
   (:require [clojure.test  :refer :all]
             [variance.core :refer :all]))
 
-(deftest call-calculate-variance
+(deftest test-calculate-variance
   (testing "easy case"
     (let [sample [2 3 4]
           v      (calculate-variance sample)]
@@ -22,7 +22,7 @@
   (testing "no samples"
     (is (thrown? Exception (calculate-variance [])))))
 
-(deftest call-calculate-variance2
+(deftest test-calculate-variance2
   (testing "easy case"
     (let [sample [2 3 4]
           v      (calculate-variance2 sample)]

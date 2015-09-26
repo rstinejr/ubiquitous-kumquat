@@ -2,11 +2,11 @@
   (:require [clojure.test  :refer :all]
             [variance.core :refer :all]))
 
+(def easy-sample [2 3 4])
 
 (deftest test-calculate-variance1
   (testing "easy case"
-    (let [sample [2 3 4]
-          v      (calculate-variance1 sample)]
+    (let [v      (calculate-variance1 easy-sample)]
       (let [exp   (double (/ 2.0 3.0))
             err   (- exp v)
             pct   (/ err exp)
@@ -25,8 +25,7 @@
 
 (deftest test-calculate-variance2
   (testing "easy case"
-    (let [sample [2 3 4]
-          v      (calculate-variance2 sample)]
+    (let [v      (calculate-variance2 easy-sample)]
       (let [exp   (double (/ 2.0 3.0))
             err   (- exp v)
             pct   (/ err exp)

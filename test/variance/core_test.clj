@@ -20,15 +20,15 @@
   [f]
   (check-calc f easy-sample easy-expect))
 
+(defn run-bigger
+  [f]
+  (check-calc f big-sample big-expect))
+
 (deftest test-calculate-variance1
   (testing "easy case"
     (is (run-easy calculate-variance1)))
   (testing "bigger variance"
-    (let [v      (calculate-variance1 big-sample)]
-      (let [err   (- big-expect v)
-            pct   (/ err big-expect)
-            pct2  (* pct pct)]
-        (is (> 0.00001 pct2)))))
+    (is (run-bigger calculate-variance1)))
   (testing "no samples"
     (is (thrown? Exception (calculate-variance1 [])))))
 
@@ -36,10 +36,14 @@
   (testing "easy case"
     (is (run-easy calculate-variance2)))
   (testing "bigger variance"
-    (let [v      (calculate-variance2 big-sample)]
-      (let [err   (- big-expect v)
-            pct   (/ err big-expect)
-            pct2  (* pct pct)]
-        (is (> 0.00001 pct2)))))
+    (is (run-bigger calculate-variance2)))
   (testing "no samples"
     (is (thrown? Exception (calculate-variance2 [])))))
+
+(deftest test-calculate-variance3
+  (testing "easy case"
+    (is (run-easy calculate-variance3)))
+  (testing "bigger variance"
+    (is (run-bigger calculate-variance3)))
+  (testing "no samples"
+    (is (thrown? Exception (calculate-variance3 [])))))

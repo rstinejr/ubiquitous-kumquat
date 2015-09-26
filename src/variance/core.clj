@@ -9,25 +9,23 @@
 
 (defn calculate-variance
   [sample]
-  (let [tallies (loop [[n & the-rest] sample
-                       m              {:sumsq 0 :sum 0 :cnt 0}]
-                     (if n
-                       (recur the-rest {:sumsq (+   (:sumsq m) (* n n)) 
-                                        :sum   (+   (:sum   m) n) 
-                                        :cnt   (inc (:cnt   m))})
-                       m))]
-    (var-from-sums (:sumsq tallies) (:sum tallies) (:cnt tallies))))
+  (let [sums  (loop [[n & the-rest] sample
+                     tallies        {:sumsq 0 :sum 0}]
+                (if (nil? n)
+                  tallies
+                  (recur the-rest {:sumsq (+ (:sumsq tallies) (* n n)) 
+                                   :sum   (+ (:sum   tallies) n)})))]
+    (var-from-sums (:sumsq sums) (:sum sums) (count sample))))
 
 (defn calculate-variance2
   [sample]
   (let [tallies (reduce 
-                  (fn [m1 m2] 
-                    {:sumsq (+   (:sumsq m1) (:sumsq m2)) 
-                     :sum   (+   (:sum   m1) (:sum   m2)) 
-                     :cnt   (inc (:cnt   m1))})
-                  {:sumsq 0 :sum 0 :cnt 0} 
-                  (map (fn [n] {:sumsq (* n n) :sum n}) sample))] 
-    (var-from-sums (:sumsq tallies) (:sum tallies) (:cnt tallies))))
+                  (fn [tallies n] 
+                    {:sumsq (+ (:sumsq tallies) (* n n)) 
+                     :sum   (+ (:sum   tallies) n)})
+                  {:sumsq 0 :sum 0} 
+                  sample)]
+    (var-from-sums (:sumsq tallies) (:sum tallies) (count sample))))
 
 (defn -main
   [& args]

@@ -3,13 +3,13 @@
             [variance.core :refer :all]))
 
 (def easy-sample [2 3 4])
+(def easy-expect (double (/ 2.0 3.0)))
 
 (deftest test-calculate-variance1
   (testing "easy case"
     (let [v      (calculate-variance1 easy-sample)]
-      (let [exp   (double (/ 2.0 3.0))
-            err   (- exp v)
-            pct   (/ err exp)
+      (let [err   (- easy-expect v)
+            pct   (/ err easy-expect)
             pct2  (* pct pct)]
         (is (> 0.00001 pct2)))))
   (testing "bigger variance"
@@ -26,9 +26,8 @@
 (deftest test-calculate-variance2
   (testing "easy case"
     (let [v      (calculate-variance2 easy-sample)]
-      (let [exp   (double (/ 2.0 3.0))
-            err   (- exp v)
-            pct   (/ err exp)
+      (let [err   (- easy-expect v)
+            pct   (/ err easy-expect)
             pct2  (* pct pct)]
         (is (> 0.00001 pct2)))))
   (testing "bigger variance"

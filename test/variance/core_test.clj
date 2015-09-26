@@ -17,9 +17,8 @@
         (is (> 0.00001 pct2)))))
   (testing "bigger variance"
     (let [v      (calculate-variance1 big-sample)]
-      (let [exp   (double (/ 28.0 7.0))
-            err   (- exp v)
-            pct   (/ err exp)
+      (let [err   (- big-expect v)
+            pct   (/ err big-expect)
             pct2  (* pct pct)]
         (is (> 0.00001 pct2)))))
   (testing "no samples"
@@ -34,9 +33,8 @@
         (is (> 0.00001 pct2)))))
   (testing "bigger variance"
     (let [v      (calculate-variance2 big-sample)]
-      (let [exp   (double (/ 28.0 7.0))
-            err   (- exp v)
-            pct   (/ err exp)
+      (let [err   (- big-expect v)
+            pct   (/ err big-expect)
             pct2  (* pct pct)]
         (is (> 0.00001 pct2)))))
   (testing "no samples"

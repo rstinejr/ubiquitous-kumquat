@@ -7,7 +7,7 @@ Clearly, if you want to compute variance, you'd use an existing function.  The g
 
 To build and run the project,
 
-1. install *lein*, see 
+1. Downloa and install *lein*, see [leiningen.org](http://leiningen.org/)
 2. ```git clone git@github.com:rstinejr/ubiquitous-kumquat.git```
 3. ```cd ubiquitous-kumquat```
 4. ```lein test```
